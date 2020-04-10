@@ -3,6 +3,8 @@ package users
 import (
 	"fmt"
 
+	"github.com/aravindvis/bookstore_users-api/utils/date_utils"
+
 	"github.com/aravindvis/bookstore_users-api/utils/errors"
 )
 
@@ -16,6 +18,7 @@ func (user *User) Save() *errors.RestError {
 	if current != nil {
 		return errors.NewBadRequestError(fmt.Sprintf("User %d exists", user.ID))
 	}
+	user.DateCreated = date_utils.GetNowString()
 	userDb[user.ID] = user
 	return nil
 }
@@ -32,7 +35,7 @@ func (user *User) Get() *errors.RestError {
 	user.FirstName = result.FirstName
 	user.LastName = result.LastName
 	user.Email = result.Email
-	user.DataCreated = result.DataCreated
+	user.DateCreated = result.DateCreated
 
 	return nil
 }
